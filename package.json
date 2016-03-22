@@ -1,0 +1,89 @@
+{
+  "scripts": {
+    "postinstall": "jspm install",
+    "start": "live-server"
+  },
+  "jspm": {
+    "name": "app",
+    "dependencies": {
+      "bootstrap": "github:twbs/bootstrap@^3.3.6",
+      "css": "github:systemjs/plugin-css@^0.1.20",
+      "json": "github:systemjs/plugin-json@^0.1.0",
+      "lodash": "npm:lodash@^4.6.0",
+      "mustache": "github:janl/mustache.js@^2.2.1",
+      "nanoajax": "github:yanatan16/nanoajax@^0.4.3"
+    },
+    "devDependencies": {
+      "core-js": "npm:core-js@^2.2.1",
+      "plugin-babel": "npm:systemjs-plugin-babel@^0.0.7",
+      "transform-async-to-generator": "npm:babel-plugin-transform-async-to-generator@^6.7.4"
+    },
+    "peerDependencies": {
+      "assert": "github:jspm/nodelibs-assert@^0.2.0-alpha",
+      "buffer": "github:jspm/nodelibs-buffer@^0.2.0-alpha",
+      "fs": "github:jspm/nodelibs-fs@^0.2.0-alpha",
+      "path": "github:jspm/nodelibs-path@^0.2.0-alpha",
+      "process": "github:jspm/nodelibs-process@^0.2.0-alpha",
+      "util": "github:jspm/nodelibs-util@^0.2.0-alpha"
+    },
+    "overrides": {
+      "github:components/jquery@2.2.4": {
+        "main": "jquery"
+      },
+      "github:twbs/bootstrap@3.3.6": {
+        "shim": {
+          "js/bootstrap": {
+            "deps": [
+              "jquery"
+            ],
+            "exports": "$"
+          }
+        },
+        "dependencies": {
+          "jquery": "github:components/jquery"
+        },
+        "files": [
+          "dist",
+          "fonts",
+          "js",
+          "css",
+          "less",
+          "grunt",
+          "LICENSE"
+        ],
+        "systemjs": {
+          "main": "dist/js/bootstrap.js",
+          "modules": {
+            "dist/js/bootstrap.js": {
+              "deps": [
+                "jquery"
+              ],
+              "exports": "$"
+            }
+          }
+        }
+      },
+      "npm:debug@2.2.0": {
+        "main": "browser.js",
+        "jspmNodeConversion": false,
+        "format": "cjs",
+        "map": {
+          "./browser.js": {
+            "node": "./node.js"
+          },
+          "fs": "@node/fs",
+          "net": "@node/net",
+          "tty": "@node/tty",
+          "util": "@node/util"
+        }
+      },
+      "npm:ms@0.7.1": {
+        "jspmNodeConversion": false,
+        "format": "cjs"
+      }
+    }
+  },
+  "devDependencies": {
+    "live-server": "^0.9.2"
+  }
+}

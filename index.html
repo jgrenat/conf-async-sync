@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <title>Devoxx Conf Example</title>
+</head>
+<body>
+
+    <div class="container">
+        <div class="row">
+            <div class="user col-md-6 js-user"></div>
+            <div class="show col-md-6 js-show"></div>
+        </div>
+    </div>
+
+    <script type="text/template" id="tpl-user">
+        <div class="row">
+            <h2 class="col-xs-12">Utilisateur : <strong>{{login}}</strong></h2>
+            <div class="col-xs-12">
+                <div class="thumbnail">
+                    <img src="{{profile_banner}}" alt="Profile banner of {{login}}">
+                    <div class="caption text-center">
+                        <ul class="row list-unstyled text-center no-margin user-stats">
+                            <li class="col-xs-6 col-md-4 user-stats-item"><strong>{{shows.length}}</strong> série(s)</li>
+                            <li class="col-xs-6 col-md-4 user-stats-item"><strong>{{movies.length}}</strong> film(s)</li>
+                            <li class="col-xs-6 col-md-4 user-stats-item"><strong>{{xp}}</strong> points</li>
+                            <li class="col-xs-6 col-md-4 user-stats-item"><strong>{{stats.episodes_to_watch}}</strong> épisodes à voir</li>
+                            <li class="col-xs-6 col-md-4 user-stats-item"><strong>{{stats.badges}}</strong> badges</li>
+                            <li class="col-xs-6 col-md-4 user-stats-item"><strong>{{stats.friends}}</strong> amis</li>
+                        </ul>
+                    </div>
+                </div>
+            <div class="col-xs-12 js-friends-container"><div>
+        </div>
+    </script>
+
+    <script type="text/template" id="tpl-show">
+        <h2>Une série au hasard : <strong>{{title}}</strong></h2>
+        <div class="well">
+            <h4>Synopsis</h4>
+            <p>{{description}}</p>
+        </div>
+
+        <div class="characters-container js-characters-container"></div>
+    </script>
+
+    <script type="text/template" id="tpl-characters">
+        <div class="row row--equal">
+            <h3 class="col-xs-12">Personnages</h3>
+            {{#characters}}
+            <div class="col-xs-6 col-sm-4 col-md-4">
+                <div class="thumbnail">
+                    <img src="{{picture}}" alt="{{name}}">
+                    <div class="caption text-center">
+                        <h5>{{name}}</h5>
+                    </div>
+                </div>
+            </div>
+            {{/characters}}
+        </div>
+    </script>
+
+
+    <script type="text/template" id="tpl-friends">
+        <div class="row row--equal">
+            <h3 class="col-xs-12">Amis</h3>
+            {{#friends}}
+            <div class="col-xs-6 col-sm-4 col-md-4 text-center">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="no-margin">{{login}}</h4>
+                    </div>
+                    <div class="panel-body">
+                        <ul class="list-unstyled no-margin">
+                            <li>{{shows.length}} série(s)</li>
+                            <li>{{movies.length}} film(s)</li>
+                            <li>{{xp}} points</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            {{/friends}}
+        </div>
+    </script>
+
+
+    <script src="jspm_packages/system.js"></script>
+    <script src="jspm.browser.js"></script>
+    <script src="jspm.config.js"></script>
+    <script>
+        System.import('app/app.js');
+    </script>
+</body>
+</html>
