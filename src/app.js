@@ -27,47 +27,28 @@ const displayShowCharacters = characters => {
 }
 
 const displayFriends = (token, friends) => {
-  let friendsInfos = [];
-  const renderFriends = () => {
-    renderTemplate('js-friends-container', templates.friends, { friends: friendsInfos });
+  const renderFriends = friends => {
+    renderTemplate('js-friends-container', templates.friends, { friends });
   };
-  const done = after(friends.length, renderFriends);
-  friends.forEach(f => betaseriesApi.getUserInfos(token, f.id, (err, friend) => {
-    if(err) {
-      console.error(err);
-    } else {
-      friendsInfos.push(friend);
-    }
-    done();
-  }));
+  const promises = friends.map(f => betaseriesApi.getUserInfos(token, f.id));
+  return Promise.all(promises)
+    .then(friends => renderFriends(friends));
 };
 
-betaseriesApi.authenticateUser((err, userData) => {
-  if (err) {
-    console.error(err);
-    return;
-  }
-  betaseriesApi.getUserInfos(userData.token, userData.user.id, (err, userInfos) => {
-    if (err) {
-      console.error(err);
-      return;
-    }
+betaseriesApi.authenticateUser()
+  .then(userData => {
+    return betaseriesApi.getUserInfos(userData.token, userData.user.id)
+      .then(userInfos => ({userData, userInfos}));
+  })
+  .then(({userData, userInfos}) => {
     const randomShow = sample(userInfos.shows);
     renderTemplate('js-user', templates.user, userInfos);
     renderTemplate('js-show', templates.show, randomShow);
-    betaseriesApi.getShowCharacters(randomShow, (err, characters) => {
-      if (err) {
-        console.error(err);
-      } else {
-        displayShowCharacters(characters);
-      }
-    });
-    betaseriesApi.getUserFriends(userData.token, (err, friends) => {
-      if (err) {
-        console.error(err);
-      } else {
-        displayFriends(userData.token, friends);
-      }
-    });
-  });
-});
+    return Promise.all([
+      betaseriesApi.getShowCharacters(randomShow)
+        .then(characters => displayShowCharacters(characters)),
+      betaseriesApi.getUserFriends(userData.token)
+        .then(friends => displayFriends(userData.token, friends))
+    ]);
+  })
+  .catch(err => console.error(err));
