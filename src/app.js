@@ -4,6 +4,7 @@ import after from 'lodash/after';
 import sample from 'lodash/sample';
 import * as betaseriesApi from 'app/betaseries-api.js';
 import Mustache from 'mustache';
+import {co} from 'co';
 
 const templates = {
   user: document.getElementById('tpl-user').innerText,
@@ -35,20 +36,17 @@ const displayFriends = (token, friends) => {
     .then(friends => renderFriends(friends));
 };
 
-betaseriesApi.authenticateUser()
-  .then(userData => {
-    return betaseriesApi.getUserInfos(userData.token, userData.user.id)
-      .then(userInfos => ({userData, userInfos}));
-  })
-  .then(({userData, userInfos}) => {
-    const randomShow = sample(userInfos.shows);
-    renderTemplate('js-user', templates.user, userInfos);
-    renderTemplate('js-show', templates.show, randomShow);
-    return Promise.all([
-      betaseriesApi.getShowCharacters(randomShow)
-        .then(characters => displayShowCharacters(characters)),
-      betaseriesApi.getUserFriends(userData.token)
-        .then(friends => displayFriends(userData.token, friends))
-    ]);
-  })
+co(function*() {
+  const userData = yield betaseriesApi.authenticateUser();
+  const userInfos = yield betaseriesApi.getUserInfos(userData.token, userData.user.id);
+  const randomShow = sample(userInfos.shows);
+  renderTemplate('js-user', templates.user, userInfos);
+  renderTemplate('js-show', templates.show, randomShow);
+  return Promise.all([
+    betaseriesApi.getShowCharacters(randomShow)
+      .then(characters => displayShowCharacters(characters)),
+    betaseriesApi.getUserFriends(userData.token)
+      .then(friends => displayFriends(userData.token, friends))
+  ]);
+})
   .catch(err => console.error(err));

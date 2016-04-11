@@ -10,6 +10,7 @@ SystemJS.config({
     "assert": "github:jspm/nodelibs-assert@0.2.0-alpha",
     "bootstrap": "github:twbs/bootstrap@3.3.6",
     "buffer": "github:jspm/nodelibs-buffer@0.2.0-alpha",
+    "co": "npm:co@4.6.0",
     "core-js": "npm:core-js@2.2.1",
     "css": "github:systemjs/plugin-css@0.1.20",
     "fs": "github:jspm/nodelibs-fs@0.2.0-alpha",
