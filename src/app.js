@@ -1,8 +1,6 @@
-import 'bootstrap/dist/css/bootstrap.min.css!';
-import 'style.css!';
-import after from 'lodash/after';
-import sample from 'lodash/sample';
-import * as betaseriesApi from 'app/betaseries-api.js';
+import './style.css';
+import {after, sample} from 'lodash';
+import * as betaseriesApi from './betaseries-api.js';
 import Mustache from 'mustache';
 
 const templates = {
@@ -24,7 +22,7 @@ const renderTemplate = (className, template, view) => {
 const displayShowCharacters = characters => {
   const someCharacters = characters.filter(c => !!c.picture).splice(0, 6);
   renderTemplate('js-characters-container', templates.characters, { characters: someCharacters });
-}
+};
 
 const displayFriends = (token, friends) => {
   let friendsInfos = [];

@@ -1,6 +1,6 @@
 import nanoajax from 'nanoajax';
 
-import {betaseries as config} from 'app/config.json!';
+import {betaseries as config} from './config.json';
 
 
 const apiEndpoint = 'http://api.betaseries.com';
