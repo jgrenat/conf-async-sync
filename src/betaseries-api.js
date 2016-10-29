@@ -29,7 +29,7 @@ export function authenticateUser(callback) {
       callback(status, parsedData.errors);
     }
   });
-};
+}
 
 export function getUserInfos(token, userId, callback) {
   nanoajax.ajax({
@@ -45,8 +45,8 @@ export function getUserInfos(token, userId, callback) {
     } else {
       callback(status, parsedData.errors);
     }
-  });
-};
+  })
+}
 
 export function getShowCharacters(show, callback) {
   nanoajax.ajax({
@@ -60,7 +60,7 @@ export function getShowCharacters(show, callback) {
       callback(status, parsedData.errors);
     }
   });
-};
+}
 
 export function getUserFriends(token, callback) {
   nanoajax.ajax({
@@ -77,4 +77,4 @@ export function getUserFriends(token, callback) {
       callback(status, parsedData.errors);
     }
   });
-};
+}
