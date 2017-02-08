@@ -11,6 +11,7 @@
   "license": "MIT",
   "dependencies": {
     "bootstrap": "^3.3.7",
+    "co": "^4.6.0",
     "lodash": "^4.16.4",
     "mustache": "^2.2.1",
     "nanoajax": "^0.4.3"

@@ -2,6 +2,7 @@ import './style.css';
 import {after, sample} from 'lodash';
 import * as betaseriesApi from './betaseries-api.js';
 import Mustache from 'mustache';
+import co from 'co';
 
 const templates = {
   user: document.getElementById('tpl-user').innerText,
@@ -24,48 +25,47 @@ const displayShowCharacters = characters => {
   renderTemplate('js-characters-container', templates.characters, { characters: someCharacters });
 };
 
+
+
+
+
+
+
+
+
+
 const displayFriends = (token, friends) => {
-  let friendsInfos = [];
-  const renderFriends = () => {
-    renderTemplate('js-friends-container', templates.friends, { friends: friendsInfos });
+  const renderFriends = friends => {
+    renderTemplate('js-friends-container', templates.friends, { friends });
   };
-  const done = after(friends.length, renderFriends);
-  friends.forEach(f => betaseriesApi.getUserInfos(token, f.id, (err, friend) => {
-    if(err) {
-      console.error(err);
-    } else {
-      friendsInfos.push(friend);
-    }
-    done();
-  }));
+  const promises = friends.map(f => betaseriesApi.getUserInfos(token, f.id));
+  return Promise.all(promises)
+    .then(friends => renderFriends(friends));
 };
 
-betaseriesApi.authenticateUser((err, userData) => {
-  if (err) {
-    console.error(err);
-    return;
-  }
-  betaseriesApi.getUserInfos(userData.token, userData.user.id, (err, userInfos) => {
-    if (err) {
-      console.error(err);
-      return;
-    }
-    const randomShow = sample(userInfos.shows);
-    renderTemplate('js-user', templates.user, userInfos);
-    renderTemplate('js-show', templates.show, randomShow);
-    betaseriesApi.getShowCharacters(randomShow, (err, characters) => {
-      if (err) {
-        console.error(err);
-      } else {
-        displayShowCharacters(characters);
-      }
-    });
-    betaseriesApi.getUserFriends(userData.token, (err, friends) => {
-      if (err) {
-        console.error(err);
-      } else {
-        displayFriends(userData.token, friends);
-      }
-    });
-  });
-});
+
+
+
+
+
+
+
+
+
+
+
+
+(async function() {
+  const userData = await betaseriesApi.authenticateUser();
+  const userInfos = await betaseriesApi.getUserInfos(userData.token, userData.user.id);
+  const randomShow = sample(userInfos.shows);
+  renderTemplate('js-user', templates.user, userInfos);
+  renderTemplate('js-show', templates.show, randomShow);
+  await Promise.all([
+    betaseriesApi.getShowCharacters(randomShow)
+      .then(characters => displayShowCharacters(characters)),
+    betaseriesApi.getUserFriends(userData.token)
+      .then(friends => displayFriends(userData.token, friends))
+  ]);
+})()
+  .catch(err => console.error(err));

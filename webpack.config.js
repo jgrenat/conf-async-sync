@@ -3,7 +3,8 @@ const webpack = require('webpack');
 module.exports = {
   context: __dirname + '/src',
   entry: {
-    app: ['bootstrap/dist/css/bootstrap.css', './app.js']
+    app: ['bootstrap/dist/css/bootstrap.css', './app.js'],
+    observables: ['bootstrap/dist/css/bootstrap.css', './observables.js'],
   },
   output: {
     path: __dirname + '/dist',

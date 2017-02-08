@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <title>Observables Example</title>
+</head>
+
+<body>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="form-group">
+                <label for="searchInput">Search users</label>
+                <input type="text" class="form-control js-search" id="searchInput" placeholder="Search users">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container js-users"></div>
+
+
+<script type="text/template" id="tpl-users">
+    <div class="row row--equal">
+        <h2 class="col-xs-12">Users found</h3>
+            {{#users}}
+            <div class="col-xs-6 col-sm-3 col-md-2">
+                <div class="thumbnail">
+                    <img src="{{avatar_url}}" alt="{{login}}">
+                    <div class="caption text-center">
+                        <h5>{{login}}</h5>
+                    </div>
+                </div>
+            </div>
+            {{/users}}
+    </div>
+</script>
+
+
+
+
+<script src="./assets/observables.bundle.js"></script>
+</body>
+
+</html>

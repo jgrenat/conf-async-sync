@@ -3,5 +3,8 @@
     "key": "API_KEY",
     "secret": "API_SECRET",
     "userCode": "USER_CODE"
+  },
+  "github": {
+    "basicHeader": "BASIC_TOKEN"
   }
 }
