@@ -1,5 +1,6 @@
 import {findUsers} from './github-api.js';
 import Mustache from 'mustache';
+import {Observable} from 'rx';
 
 
 const usersTemplate = document.getElementById('tpl-users').innerText;
@@ -10,30 +11,14 @@ const renderTemplate = (className, template, view) => {
 
 
 
+
 const debounce = 500;
 const minLength = 2;
 
-let previousValue;
-let deferTimer;
-
-function searchAndDisplayUsers(searchString) {
-  findUsers(searchString).then(users => {
-    if(previousValue !== searchString) {
-      return;
-    }
-    renderTemplate('js-users', usersTemplate, {users});
-    console.log(users);
-  });
-}
-
-document.querySelector('.js-search').addEventListener('input', event => {
-  const value = event.target.value;
-
-  clearTimeout(deferTimer);
-  deferTimer = setTimeout(() => {
-    if (value && value.length >= minLength && value != previousValue) {
-      searchAndDisplayUsers(value);
-      previousValue = value;
-    }
-  }, debounce);
-});
+Observable.fromEvent(document.querySelector('.js-search'), 'keyup')
+  .map(event => event.target.value)
+  .distinctUntilChanged()
+  .debounce(debounce)
+  .filter(value => value && value.length >= minLength)
+  .flatMapLatest(value => Observable.fromPromise(findUsers(value)))
+  .subscribe(users => renderTemplate('js-users', usersTemplate, {users}));
